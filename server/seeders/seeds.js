@@ -1,3 +1,4 @@
+// this is a library used to help generate dummy data
 const faker = require('faker');
 
 const db = require('../config/connection');

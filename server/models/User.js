@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+// password hashing
 const bcrypt = require('bcrypt');
 
 const userSchema = new Schema(
@@ -13,6 +14,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      // use 'match' validation option to use regex to test the input value then retrun an error message if pattern is not matched
       match: [/.+@.+\..+/, 'Must match an email address!']
     },
     password: {
@@ -40,8 +42,11 @@ const userSchema = new Schema(
   }
 );
 
+// mongoose way of hashing a password
 // set up pre-save middleware to create password
 userSchema.pre('save', async function(next) {
+  // mongoose implements middleware to capture our data before getting to or coming from the database
+  // check if data is new or if password has been modified
   if (this.isNew || this.isModified('password')) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(this.password, saltRounds);

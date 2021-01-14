@@ -1,6 +1,7 @@
 const express = require('express');
 // import ApolloServer
 const { ApolloServer } = require('apollo-server-express');
+const path = require('path');
 
 // import our typeDefs and resolvers
 const { typeDefs, resolvers } = require('./schemas');
@@ -30,6 +31,22 @@ server.applyMiddleware({ app });
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+// serve up the React front-end code in production
+// check to see if the Node environment is in production. 
+// If it is, instruct Express.js server to serve any files in the React application's build directory in the client folder
+// Serve up static assets
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/build')));
+}
+
+// serve up the React front-end code in production
+// wildcard GET route for the server
+// if we make a GET request to any location on the server that doesn't have an explicit route defined,
+// respond with the production-ready React front-end code
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 
 // when we run our server, we listen for the mongoose connection to be made
 // open a successful connection, the server is started

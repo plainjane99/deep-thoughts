@@ -24,6 +24,17 @@ import Home from './pages/Home';
 
 // establish the connection to the back-end server's /graphql endpoint using apollo
 const client = new ApolloClient({
+  request: operation => {
+    const token = localStorage.getItem('id_token');
+
+    // we use the .setContext() method to set the HTTP request headers 
+    // of every request to include the token, whether the request needs it or not
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : ''
+      }
+    });
+  },
   // /graphql is the endpoint
   // we set up the server path in package.json as "proxy"
   // the Create React App team set up the development server to prefix all HTTP requests using relative paths

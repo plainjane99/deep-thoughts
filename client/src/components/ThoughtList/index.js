@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 // ThoughtList component will receive two props: a title and the thoughts array
 // We destructure the argument data to avoid using props.title and props.thoughts
 const ThoughtList = ({ thoughts, title }) => {
@@ -18,17 +20,25 @@ const ThoughtList = ({ thoughts, title }) => {
                 thoughts.map(thought => (
                     <div key={thought._id} className="card mb-3">
                         <p className="card-header">
-                            {thought.username}
+                            <Link
+                                to={`/profile/${thought.username}`}
+                                style={{ fontWeight: 700 }}
+                                className="text-light"
+                            >
+                                {thought.username}
+                            </Link>{' '}
                             thought on {thought.createdAt}
                         </p>
                         <div className="card-body">
-                            <p>{thought.thoughtText}</p>
-                            {/* check to see the value of thought.reactionCount */}
-                            {/* conditionally displaying a message to contextualize what the call to action should be */}
-                            <p className="mb-0">
-                                Reactions: {thought.reactionCount} || Click to{' '}
-                                {thought.reactionCount ? 'see' : 'start'} the discussion!
-                            </p>
+                            <Link to={`/thought/${thought._id}`}>
+                                <p>{thought.thoughtText}</p>
+                                {/* check to see the value of thought.reactionCount */}
+                                {/* conditionally displaying a message to contextualize what the call to action should be */}
+                                <p className="mb-0">
+                                    Reactions: {thought.reactionCount} || Click to{' '}
+                                    {thought.reactionCount ? 'see' : 'start'} the discussion!
+                                </p>
+                            </Link>
                         </div>
                     </div>
                 ))}

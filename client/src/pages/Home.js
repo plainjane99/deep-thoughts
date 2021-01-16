@@ -14,6 +14,7 @@ import Auth from '../utils/auth';
 // import components
 import ThoughtList from '../components/ThoughtList';
 import FriendList from '../components/FriendList';
+import ThoughtForm from '../components/ThoughtForm';
 
 const Home = () => {
 
@@ -42,6 +43,14 @@ const Home = () => {
   return (
     <main>
       <div className='flex-row justify-space-between'>
+
+        {/* conditionally render */}
+        {loggedIn && (
+          <div className="col-12 mb-3">
+            <ThoughtForm />
+          </div>
+        )}
+
         {/* conditional layout for this <div>. 
         If the user isn't logged in, span the full width of the row. 
         if the user is logged in, span eight columns */}

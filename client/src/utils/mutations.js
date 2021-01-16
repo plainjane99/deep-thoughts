@@ -17,12 +17,28 @@ export const LOGIN_USER = gql`
   }
 `;
 
-// creating a new user through the signup form page
+// creating a new user through the signup form page by passing to the useMutation Hook in signup
 export const ADD_USER = gql`
   mutation addUser($username: String!, $email: String!, $password: String!) {
     addUser(username: $username, email: $email, password: $password) {
       token
       user {
+        _id
+        username
+      }
+    }
+  }
+`;
+
+// mutation returns an updated user object whose ID matches the me object already stored in cache
+// When the cache is updated, the useQuery(QUERY_ME_BASIC) Hook on the homepage causes a re-render.
+export const ADD_FRIEND = gql`
+  mutation addFriend($id: ID!) {
+    addFriend(friendId: $id) {
+      _id
+      username
+      friendCount
+      friends {
         _id
         username
       }
